@@ -1,0 +1,54 @@
+require_relative 'variables'
+
+Vagrant.configure("2") do |config|
+  config.hostmanager.enabled = true 
+  config.hostmanager.manage_host = true 
+  
+  ### db vm ###
+  config.vm.define "db" do |db|
+    db.vm.box = $os
+    db.vm.hostname = "db"
+    db.vm.network "private_network", ip: $db_ip
+    db.vm.provider "virtualbox" do |vb|
+      vb.memory = $db_ram
+      vb.cpus = $db_cpu
+    end
+    db.vm.provision "shell", inline: <<-SHELL
+      sudo apt update
+      sudo apt upgrade -y
+      sudo apt install -y mysql-server
+      sudo mysql -e "CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+      sudo mysql -e "CREATE USER '#{$db_user}'@'#{$web_ip}' IDENTIFIED BY '#{$db_password}';"
+      sudo mysql -e "GRANT ALL ON moodle.* TO '#{$db_user}'@'#{$web_ip}';"
+      sudo mysql -e "FLUSH PRIVILEGES;"
+      sudo sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+      sudo systemctl restart mysql
+    SHELL
+  end
+  
+  ### web vm ###
+  config.vm.define "web" do |web|
+    web.vm.box = $os
+    web.vm.hostname = "web"
+    web.vm.network "private_network", ip: $web_ip
+    web.vm.provider "virtualbox" do |vb|
+      vb.memory = $web_ram
+      vb.cpus = $web_cpu
+    end
+    web.vm.provision "shell", inline: <<-SHELL
+    #!/bin/bash
+    sudo apt update
+    sudo apt install -y mysql-client apache2 php php-mysql php-mbstring php-xml php-curl php-zip php-gd php-intl php-soap
+    sudo wget https://download.moodle.org/download.php/direct/stable405/moodle-latest-405.tgz
+    sudo mv moodle-latest-405.tgz /var/www/html/
+    cd /var/www/html/
+    sudo tar -xf moodle-latest-405.tgz
+    sudo chown www-data moodle
+    cd ..
+    sudo mkdir moodledata
+    sudo chown www-data moodledata
+    sudo sed -i 's/^;\?max_input_vars\s*=\s*[0-9]*/max_input_vars = 5000/' /etc/php/8.1/apache2/php.ini
+    sudo systemctl restart apache2.service
+    SHELL
+  end
+end
