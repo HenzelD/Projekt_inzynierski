@@ -4,14 +4,19 @@ Wymagania:
 - Lokalnie: Vagrant, VirtualBox
 - Chmurowo: Konto AWS, Terraform
 
+Wybierz sposób wdrożenia:
+
+Lokalnie:
+- Użycie:
+    edytować pliki zmiennych według potrzeb variables.rb
+    w konsoli uruchomić komendę vagrant up
+    
+  
 Instalacja:
 - git clone https://github.com/HenzelD/Projekt_inzynierski.git
 - cd Projekt_inzynierski
 
-Wybierz sposób wdrożenia:
 
-Lokalnie:
-- vagrant up
 
 Chmurowo:
 - terraform init
