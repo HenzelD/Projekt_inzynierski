@@ -1,58 +1,58 @@
-# Opis
-Projekt polega na automatyzacji konfiguracji środowiska IT dla aplikacji webowych przy użyciu dwóch podejść: lokalnego z wykorzystaniem Vagranta oraz chmurowego w AWS z użyciem Terraform. Implementacja obejmuje przygotowanie infrastruktury dla systemu Moodle, automatyczne tworzenie instancji bazy danych oraz aplikacji, a także konfigurację load balancera do równoważenia ruchu.
+# Description
+The project focuses on automating the configuration of an IT environment for web applications using two approaches: a local setup with Vagrant and a cloud-based deployment on AWS using Terraform. The implementation includes preparing the infrastructure for the Moodle system, automatically creating database and application instances, and configuring a load balancer to distribute traffic.
 
-## Wymagania:
-- Lokalnie: Vagrant, VirtualBox
-- Chmurowo: Konto AWS, Terraform
+## Requirements:
+- Locally: Vagrant, VirtualBox
+- Cloud-based: AWS account, Terraform
 
-## Instalacja:
+## Installation:
 ```bash
 git clone https://github.com/HenzelD/Projekt_inzynierski.git
 cd Projekt_inzynierski
 ```
-W przypadku konfiguracji chmurowych dodatkowo
+For cloud-based configurations, additionally run:
 ```bash
 aws configure
 ```
-## Wybierz sposób wdrożenia:
+## Choose a deployment method:
 
-### Lokalnie:
-Edytować plik zmiennych według potrzeb - variables.rb
-#### Użycie
-W konsoli uruchomić komendę
+### Locally:
+Edit the variable file according to your needs - variables.rb
+#### Usage
+Run the following command in the terminal:
 ```bash
 vagrant up
 ```
-Wpisać adres IP w przeglądarce, który skonfigorowaliśmy w pliku zmiennych 
-#### Opis
-Skrypt obejmuje przygotowanie infrastruktury dla systemu Moodle, automatyczne tworzenie dwóch maszyn wirtualnych — jednej dedykowanej bazie danych, a drugiej aplikacji Moodle. Obie maszyny są w pełni automatycznie konfigurowane.
-### Chmurowo:
-Edytować plik zmiennych według potrzeb - vars.tf
-#### Użycie
-W konsoli uruchomić komendę
+Enter the configured IP address in the browser, which was set in the variable file.
+#### Description
+The script sets up the infrastructure for the Moodle system, automatically creating two virtual machines — one dedicated to the database and the other to the Moodle application. Both machines are fully configured automatically.
+### Cloud-based:
+Edit the variable file according to your needs - vars.tf
+#### Usage
+Run the following command in the terminal:
 ```bash
 terraform init
 terraform apply 
 ```
-Wpisać adres IP w przeglądarce, który skonfigorowaliśmy w pliku vars.tf
-#### Opis
-Skrypt obejmuje przygotowanie infrastruktury dla systemu Moodle, automatyczne tworzenie dwóch instancji — jednej dedykowanej bazie danych, a drugiej aplikacji Moodle. Obie maszyny są w pełni automatycznie konfigurowane.
-### Zaawansowane chmurowo:
-Edytować plik zmiennych według potrzeb - vars.tf
-#### Użycie
-W konsoli uruchomić komendę
+Enter the configured IP address in the browser, which was set in the vars.tf file.
+#### Description
+The script sets up the infrastructure for the Moodle system, automatically creating two instances — one dedicated to the database and the other to the Moodle application. Both instances are fully configured automatically.
+### Advanced cloud-based:
+Edit the variable file according to your needs - vars.tf
+#### Usage
+Run the following command in the terminal:
 ```bash
 terraform init
 terraform apply 
 ```
-Wpisać adres IP w przeglądarce, który skonfigorowaliśmy w pliku vars.tf, a następnie przejść przez cały proces instalacyjny moodle, założyć swój kurs. Skopiować pliki z folderu part 2 i wkleic do folderu part 1. Ponownie uruchomić komendy.
+Enter the configured IP address in the browser, which was set in the vars.tf file. Then, complete the Moodle installation process, create your course, copy the files from the part 2 folder, and paste them into the part 1 folder. Run the commands again:
 ```bash
 terraform init
 terraform apply 
 ```
-#### Opis
-Skrypt obejmuje przygotowanie infrastruktury dla systemu Moodle, automatyczne tworzenie dwóch instancji — jednej dedykowanej bazie danych, a drugiej aplikacji Moodle. Obie maszyny są w pełni automatycznie konfigurowane.
-Part 2  w zaawansowanej konfiguracji chmurowej służy do utworzenia obrazu z naszej skonfigurowanej maszyny, tworzy na tej podstawie następne, a ruch jest rozdzielany na nie wszystkie przez load balancera.
+#### Description
+The script sets up the infrastructure for the Moodle system, automatically creating two instances — one dedicated to the database and the other to the Moodle application. Both instances are fully configured automatically.
+Part 2 in the advanced cloud-based setup is used to create an image from the configured machine, which is then used to launch additional instances. The traffic is distributed among them using a load balancer.
 
 
 
